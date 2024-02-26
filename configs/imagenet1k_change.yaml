@@ -1,0 +1,68 @@
+# this is the basic configuration file, use cifar10 as default experiments
+T: 2   # number of iterations (seeds)
+
+run_batch_size: 40 # number of experiments to run in parallel
+
+id_ds: 
+  - 'imagenet1k'
+methods: 
+  - 'no-ucb'
+  - 'hoeffding'
+  - 'lil-heuristic'
+  - 'tpr_95'
+  - 'fpr_5'
+scores: 
+  - 'GRADNORM'
+  - 'ASH'
+  - 'REACT'
+alphas: 
+  - 0.05
+probs: 
+  - 0.2  # importance sampling probability
+deltas: 
+  - 0.2
+gamma: 
+  - 0.2
+window_sizes: 
+  - null
+  - 10000
+
+change: True # if True, the change detection is performed
+
+root_pfx: 'real' # the folder you are going to store under the output folder
+
+# ------------------ below is the default configuration file ------------------
+seed: 0
+root_dir: '../'
+
+data_conf: 
+  #the data streams
+  simulation: False 
+  streams: 
+    - 
+      name_id: 'imagenet1k'
+      num_samples: 50000 
+      gamma: 0.2 # 4:1
+
+      name_ood: 'far'
+      ood_method: 'ASH'
+    - 
+      name_id: 'imagenet1k'
+      num_samples: 150000 
+      gamma: 0.2 # 4:1
+
+      name_ood: 'near'
+      ood_method: 'ASH'
+
+method: "lil-heuristic"
+window: null
+tpr_k: 95
+
+
+alpha: 0.05 #the FPR tolerance
+delta: 0.2 # the high probability of the confidence interval
+prob: 0.2 #the probability of querying when the score is larger than the threshold
+
+# change detection
+detect_change: True # if True, the change detection is performed
+restart: False      # if True, after change is detected, the sample pool is restarted

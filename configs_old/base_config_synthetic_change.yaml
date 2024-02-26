@@ -1,0 +1,36 @@
+seed: 0
+
+data_conf: 
+  #the data streams
+  simulation: True 
+  streams: 
+    - 
+      mu_id: 5.5
+      sigma_id: 4
+
+      num_samples: 50000 
+      gamma: 0.2 # 4:1
+
+      mu_ood: -6
+      sigma_ood: 4
+    - 
+      mu_id: 5.5
+      sigma_id: 4
+
+      num_samples: 150000
+      gamma: 0.2 # 4:1
+
+      mu_ood: -5
+      sigma_ood: 4
+
+alpha : 0.05 #the FPR tolerance
+delta : 0.2 # the high probability of the confidence interval
+prob  : 0.2 #the probability of querying when the score is larger than the threshold
+method  : "lil-heuristic"  #choose from 'lil-heuristic', 'hoeffding', 'no'
+
+
+window : null  
+
+restart_on_change: False 
+
+detect_change: True 

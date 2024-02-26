@@ -1,0 +1,394 @@
+!!python/object/new:openood.utils.config.Config
+state:
+  dataset:
+    name: imagenet
+    num_classes: 1000
+    pre_size: 256
+    image_size: 224
+    interpolation: bilinear
+    normalization_type: imagenet
+    num_workers: 4
+    num_gpus: 1
+    num_machines: 1
+    split_names: &id001
+    - train
+    - val
+    - test
+    train:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/train_imagenet.txt
+      batch_size: 32
+      shuffle: true
+    val:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/val_imagenet.txt
+      batch_size: 256
+      shuffle: false
+    test:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet.txt
+      batch_size: 256
+      shuffle: false
+  ood_dataset:
+    name: imagenet_ood
+    num_classes: 1000
+    dataset_class: ImglistDataset
+    interpolation: bilinear
+    batch_size: 32
+    shuffle: false
+    pre_size: 256
+    image_size: 256
+    num_workers: 4
+    num_gpus: 1
+    num_machines: 1
+    split_names: &id002
+    - val
+    - nearood
+    - farood
+    val:
+      data_dir: ./data/images_largescale/
+      imglist_pth: ./data/benchmark_imglist/imagenet/val_openimage_o.txt
+    nearood:
+      datasets: &id003
+      - species
+      - inaturalist
+      - openimageo
+      - imageneto
+      inaturalist:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+      openimageo:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+      imageneto:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_o.txt
+      species:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_species.txt
+    farood:
+      datasets: &id004
+      - texture
+      - mnist
+      texture:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_texture.txt
+      mnist:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_mnist.txt
+  network:
+    name: resnet50
+    num_classes: 1000
+    image_size: 224
+    pretrained: true
+    checkpoint: results/checkpoints/imagenet_res50_acc76.10.pth
+    num_gpus: 1
+  exp_name: imagenet_resnet50_test_ood_ood_ebo_default
+  output_dir: ./results/imagenet_resnet50_test_ood_ood_ebo_default
+  save_output: true
+  merge_option: merge
+  mark: default
+  num_gpus: 1
+  num_workers: 4
+  num_machines: 1
+  machine_rank: 0
+  pipeline:
+    name: test_ood
+  evaluator:
+    name: ood
+  recorder:
+    save_scores: true
+    save_csv: true
+  preprocessor:
+    name: base
+  postprocessor:
+    name: ebo
+    APS_mode: true
+    postprocessor_args:
+      temperature: 1
+    postprocessor_sweep:
+      temperature_list: &id005
+      - 1
+      - 10
+      - 100
+      - 1000
+dictitems:
+  dataset: !!python/object/new:openood.utils.config.Config
+    state:
+      name: imagenet
+      num_classes: 1000
+      pre_size: 256
+      image_size: 224
+      interpolation: bilinear
+      normalization_type: imagenet
+      num_workers: 4
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id001
+      train:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/train_imagenet.txt
+        batch_size: 32
+        shuffle: true
+      val:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/val_imagenet.txt
+        batch_size: 256
+        shuffle: false
+      test:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet.txt
+        batch_size: 256
+        shuffle: false
+    dictitems:
+      name: imagenet
+      num_classes: 1000
+      pre_size: 256
+      image_size: 224
+      interpolation: bilinear
+      normalization_type: imagenet
+      num_workers: 4
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id001
+      train: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/train_imagenet.txt
+          batch_size: 32
+          shuffle: true
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/train_imagenet.txt
+          batch_size: 32
+          shuffle: true
+      val: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/val_imagenet.txt
+          batch_size: 256
+          shuffle: false
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/val_imagenet.txt
+          batch_size: 256
+          shuffle: false
+      test: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet.txt
+          batch_size: 256
+          shuffle: false
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet.txt
+          batch_size: 256
+          shuffle: false
+  ood_dataset: !!python/object/new:openood.utils.config.Config
+    state:
+      name: imagenet_ood
+      num_classes: 1000
+      dataset_class: ImglistDataset
+      interpolation: bilinear
+      batch_size: 32
+      shuffle: false
+      pre_size: 256
+      image_size: 256
+      num_workers: 4
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id002
+      val:
+        data_dir: ./data/images_largescale/
+        imglist_pth: ./data/benchmark_imglist/imagenet/val_openimage_o.txt
+      nearood:
+        datasets: *id003
+        inaturalist:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+        openimageo:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+        imageneto:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_o.txt
+        species:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_species.txt
+      farood:
+        datasets: *id004
+        texture:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_texture.txt
+        mnist:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/imagenet/test_mnist.txt
+    dictitems:
+      name: imagenet_ood
+      num_classes: 1000
+      dataset_class: ImglistDataset
+      interpolation: bilinear
+      batch_size: 32
+      shuffle: false
+      pre_size: 256
+      image_size: 256
+      num_workers: 4
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id002
+      val: !!python/object/new:openood.utils.config.Config
+        state:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/val_openimage_o.txt
+        dictitems:
+          data_dir: ./data/images_largescale/
+          imglist_pth: ./data/benchmark_imglist/imagenet/val_openimage_o.txt
+      nearood: !!python/object/new:openood.utils.config.Config
+        state:
+          datasets: *id003
+          inaturalist:
+            data_dir: ./data/images_largescale/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+          openimageo:
+            data_dir: ./data/images_largescale/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+          imageneto:
+            data_dir: ./data/images_largescale/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_o.txt
+          species:
+            data_dir: ./data/images_largescale/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_species.txt
+        dictitems:
+          datasets: *id003
+          inaturalist: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+            dictitems:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_inaturalist.txt
+          openimageo: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+            dictitems:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_openimage_o.txt
+          imageneto: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_o.txt
+            dictitems:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_imagenet_o.txt
+          species: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_species.txt
+            dictitems:
+              data_dir: ./data/images_largescale/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_species.txt
+      farood: !!python/object/new:openood.utils.config.Config
+        state:
+          datasets: *id004
+          texture:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_texture.txt
+          mnist:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/imagenet/test_mnist.txt
+        dictitems:
+          datasets: *id004
+          texture: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_texture.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_texture.txt
+          mnist: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_mnist.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/imagenet/test_mnist.txt
+  network: !!python/object/new:openood.utils.config.Config
+    state:
+      name: resnet50
+      num_classes: 1000
+      image_size: 224
+      pretrained: true
+      checkpoint: results/checkpoints/imagenet_res50_acc76.10.pth
+      num_gpus: 1
+    dictitems:
+      name: resnet50
+      num_classes: 1000
+      image_size: 224
+      pretrained: true
+      checkpoint: results/checkpoints/imagenet_res50_acc76.10.pth
+      num_gpus: 1
+  exp_name: imagenet_resnet50_test_ood_ood_ebo_default
+  output_dir: ./results/imagenet_resnet50_test_ood_ood_ebo_default
+  save_output: true
+  merge_option: merge
+  mark: default
+  num_gpus: 1
+  num_workers: 4
+  num_machines: 1
+  machine_rank: 0
+  pipeline: !!python/object/new:openood.utils.config.Config
+    state:
+      name: test_ood
+    dictitems:
+      name: test_ood
+  evaluator: !!python/object/new:openood.utils.config.Config
+    state:
+      name: ood
+    dictitems:
+      name: ood
+  recorder: !!python/object/new:openood.utils.config.Config
+    state:
+      save_scores: true
+      save_csv: true
+    dictitems:
+      save_scores: true
+      save_csv: true
+  preprocessor: !!python/object/new:openood.utils.config.Config
+    state:
+      name: base
+    dictitems:
+      name: base
+  postprocessor: !!python/object/new:openood.utils.config.Config
+    state:
+      name: ebo
+      APS_mode: true
+      postprocessor_args:
+        temperature: 1
+      postprocessor_sweep:
+        temperature_list: *id005
+    dictitems:
+      name: ebo
+      APS_mode: true
+      postprocessor_args: !!python/object/new:openood.utils.config.Config
+        state:
+          temperature: 1
+        dictitems:
+          temperature: 1
+      postprocessor_sweep: !!python/object/new:openood.utils.config.Config
+        state:
+          temperature_list: *id005
+        dictitems:
+          temperature_list: *id005

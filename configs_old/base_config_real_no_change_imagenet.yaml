@@ -1,0 +1,28 @@
+seed: 0
+root_dir: '../'
+
+data_conf: 
+  #the data streams
+  simulation: False 
+  streams: 
+    - 
+      name_id: 'imagenet1k'
+      num_samples: 150000 
+      gamma: 0.2 # 4:1
+
+      name_ood: 'mixture'
+      ood_method: 'ASH'
+
+
+alpha: 0.05 #the FPR tolerance
+delta: 0.2 # the high probability of the confidence interval
+prob: 0.2 #the probability of querying when the score is larger than the threshold
+
+method  : "lil-heuristic"  #choose from 'lil-heuristic', 'hoeffding', 'no'
+
+
+window : null  
+
+restart: False 
+
+detect_change: False 

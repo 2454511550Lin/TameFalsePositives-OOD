@@ -1,0 +1,369 @@
+!!python/object/new:openood.utils.config.Config
+state:
+  dataset:
+    name: cifar100
+    num_classes: 100
+    image_size: 32
+    pre_size: 32
+    interpolation: bilinear
+    normalization_type: cifar100
+    num_workers: 8
+    num_gpus: 1
+    num_machines: 1
+    split_names: &id001
+    - train
+    - val
+    - test
+    train:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar100/train_cifar100.txt
+      batch_size: 128
+      shuffle: true
+    val:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar100.txt
+      batch_size: 200
+      shuffle: false
+    test:
+      dataset_class: ImglistDataset
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar100.txt
+      batch_size: 200
+      shuffle: false
+  ood_dataset:
+    name: cifar100_ood
+    num_classes: 100
+    num_workers: 8
+    num_gpus: 1
+    num_machines: 1
+    dataset_class: ImglistDataset
+    batch_size: 128
+    shuffle: false
+    split_names: &id002
+    - val
+    - nearood
+    - farood
+    val:
+      data_dir: ./data/images_classic/
+      imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar10.txt
+    nearood:
+      datasets: &id003
+      - cifar10
+      - tin
+      cifar10:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar10.txt
+      tin:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/test_tin.txt
+    farood:
+      datasets: &id004
+      - mnist
+      - svhn
+      - texture
+      - places365
+      mnist:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/test_mnist.txt
+      svhn:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/test_svhn.txt
+      texture:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/test_texture.txt
+      places365:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/test_places365.txt
+  network:
+    name: resnet18_32x32
+    num_classes: 100
+    pretrained: true
+    checkpoint: checkpoints/cifar100_res18_acc78.20.ckpt
+    num_gpus: 1
+  exp_name: cifar100_resnet18_32x32_test_ood_ood_vim_0
+  output_dir: ./results/cifar100_resnet18_32x32_test_ood_ood_vim_0
+  save_output: true
+  merge_option: default
+  mark: '0'
+  num_gpus: 1
+  num_workers: 8
+  num_machines: 1
+  machine_rank: 0
+  pipeline:
+    name: test_ood
+  evaluator:
+    name: ood
+  recorder:
+    save_scores: true
+    save_csv: true
+  preprocessor:
+    name: base
+  postprocessor:
+    name: vim
+    APS_mode: false
+    postprocessor_args:
+      dim: 256
+dictitems:
+  dataset: !!python/object/new:openood.utils.config.Config
+    state:
+      name: cifar100
+      num_classes: 100
+      image_size: 32
+      pre_size: 32
+      interpolation: bilinear
+      normalization_type: cifar100
+      num_workers: 8
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id001
+      train:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/train_cifar100.txt
+        batch_size: 128
+        shuffle: true
+      val:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar100.txt
+        batch_size: 200
+        shuffle: false
+      test:
+        dataset_class: ImglistDataset
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar100.txt
+        batch_size: 200
+        shuffle: false
+    dictitems:
+      name: cifar100
+      num_classes: 100
+      image_size: 32
+      pre_size: 32
+      interpolation: bilinear
+      normalization_type: cifar100
+      num_workers: 8
+      num_gpus: 1
+      num_machines: 1
+      split_names: *id001
+      train: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/train_cifar100.txt
+          batch_size: 128
+          shuffle: true
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/train_cifar100.txt
+          batch_size: 128
+          shuffle: true
+      val: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar100.txt
+          batch_size: 200
+          shuffle: false
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar100.txt
+          batch_size: 200
+          shuffle: false
+      test: !!python/object/new:openood.utils.config.Config
+        state:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar100.txt
+          batch_size: 200
+          shuffle: false
+        dictitems:
+          dataset_class: ImglistDataset
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar100.txt
+          batch_size: 200
+          shuffle: false
+  ood_dataset: !!python/object/new:openood.utils.config.Config
+    state:
+      name: cifar100_ood
+      num_classes: 100
+      num_workers: 8
+      num_gpus: 1
+      num_machines: 1
+      dataset_class: ImglistDataset
+      batch_size: 128
+      shuffle: false
+      split_names: *id002
+      val:
+        data_dir: ./data/images_classic/
+        imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar10.txt
+      nearood:
+        datasets: *id003
+        cifar10:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar10.txt
+        tin:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/test_tin.txt
+      farood:
+        datasets: *id004
+        mnist:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/test_mnist.txt
+        svhn:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/test_svhn.txt
+        texture:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/test_texture.txt
+        places365:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/test_places365.txt
+    dictitems:
+      name: cifar100_ood
+      num_classes: 100
+      num_workers: 8
+      num_gpus: 1
+      num_machines: 1
+      dataset_class: ImglistDataset
+      batch_size: 128
+      shuffle: false
+      split_names: *id002
+      val: !!python/object/new:openood.utils.config.Config
+        state:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar10.txt
+        dictitems:
+          data_dir: ./data/images_classic/
+          imglist_pth: ./data/benchmark_imglist/cifar100/val_cifar10.txt
+      nearood: !!python/object/new:openood.utils.config.Config
+        state:
+          datasets: *id003
+          cifar10:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar10.txt
+          tin:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/cifar100/test_tin.txt
+        dictitems:
+          datasets: *id003
+          cifar10: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar10.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_cifar10.txt
+          tin: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_tin.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_tin.txt
+      farood: !!python/object/new:openood.utils.config.Config
+        state:
+          datasets: *id004
+          mnist:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/cifar100/test_mnist.txt
+          svhn:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/cifar100/test_svhn.txt
+          texture:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/cifar100/test_texture.txt
+          places365:
+            data_dir: ./data/images_classic/
+            imglist_pth: ./data/benchmark_imglist/cifar100/test_places365.txt
+        dictitems:
+          datasets: *id004
+          mnist: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_mnist.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_mnist.txt
+          svhn: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_svhn.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_svhn.txt
+          texture: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_texture.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_texture.txt
+          places365: !!python/object/new:openood.utils.config.Config
+            state:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_places365.txt
+            dictitems:
+              data_dir: ./data/images_classic/
+              imglist_pth: ./data/benchmark_imglist/cifar100/test_places365.txt
+  network: !!python/object/new:openood.utils.config.Config
+    state:
+      name: resnet18_32x32
+      num_classes: 100
+      pretrained: true
+      checkpoint: checkpoints/cifar100_res18_acc78.20.ckpt
+      num_gpus: 1
+    dictitems:
+      name: resnet18_32x32
+      num_classes: 100
+      pretrained: true
+      checkpoint: checkpoints/cifar100_res18_acc78.20.ckpt
+      num_gpus: 1
+  exp_name: cifar100_resnet18_32x32_test_ood_ood_vim_0
+  output_dir: ./results/cifar100_resnet18_32x32_test_ood_ood_vim_0
+  save_output: true
+  merge_option: default
+  mark: '0'
+  num_gpus: 1
+  num_workers: 8
+  num_machines: 1
+  machine_rank: 0
+  pipeline: !!python/object/new:openood.utils.config.Config
+    state:
+      name: test_ood
+    dictitems:
+      name: test_ood
+  evaluator: !!python/object/new:openood.utils.config.Config
+    state:
+      name: ood
+    dictitems:
+      name: ood
+  recorder: !!python/object/new:openood.utils.config.Config
+    state:
+      save_scores: true
+      save_csv: true
+    dictitems:
+      save_scores: true
+      save_csv: true
+  preprocessor: !!python/object/new:openood.utils.config.Config
+    state:
+      name: base
+    dictitems:
+      name: base
+  postprocessor: !!python/object/new:openood.utils.config.Config
+    state:
+      name: vim
+      APS_mode: false
+      postprocessor_args:
+        dim: 256
+    dictitems:
+      name: vim
+      APS_mode: false
+      postprocessor_args: !!python/object/new:openood.utils.config.Config
+        state:
+          dim: 256
+        dictitems:
+          dim: 256
